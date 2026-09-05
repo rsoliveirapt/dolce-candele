@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    
+    --brand-light: #fadbc7;
+    --brand-light-subtle: #fdf2e9;
+    --brand-light-border: #f7caac;
+    --brand-dark: #002a59;
+    --brand-dark-subtle: #003b7a;
+    --brand-dark-hover: #001f42;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #fdf5ef;
+    color: #002a59;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Custom Utilities for Dolce Candele Brand Palette (#fadbc7 & #002a59) */
+.bg-brand-light {
+  background-color: #fadbc7;
+}
+
+.bg-brand-light-subtle {
+  background-color: #fdf2e9;
+}
+
+.bg-brand-dark {
+  background-color: #002a59;
+}
+
+.bg-brand-dark-subtle {
+  background-color: #003b7a;
+}
+
+.text-brand-dark {
+  color: #002a59;
+}
+
+.text-brand-light {
+  color: #fadbc7;
+}
+
+.border-brand-light {
+  border-color: #fadbc7;
+}
+
+.border-brand-dark {
+  border-color: #002a59;
+}
+
+.glass-panel {
+  background: rgba(253, 245, 239, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(250, 219, 199, 0.8);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid #fadbc7;
+  box-shadow: 0 4px 20px -2px rgba(0, 42, 89, 0.06);
+}
+
+.dark .glass-card {
+  background: rgba(0, 42, 89, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(250, 219, 199, 0.3);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fdf2e9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fadbc7;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #002a59;
+}
