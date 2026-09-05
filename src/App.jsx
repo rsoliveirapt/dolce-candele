@@ -38,7 +38,7 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50/50 dark:bg-stone-950 text-stone-800 dark:text-stone-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#fdf5ef] dark:bg-[#001229] text-[#002a59] dark:text-[#fadbc7] flex flex-col font-sans transition-colors duration-300">
       
       {/* Top Navbar */}
       <Navbar

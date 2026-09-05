@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --font-heading: 'Outfit', sans-serif;
@@ -27,7 +29,7 @@
 }
 
 .glass-panel {
-  background: rgba(253, 245, 239, 0.92);
+  background: rgba(253, 245, 239, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid #fadbc7;
@@ -35,7 +37,7 @@
 }
 
 html.dark .glass-panel {
-  background: rgba(0, 29, 66, 0.92);
+  background: rgba(0, 29, 66, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(250, 219, 199, 0.3);
