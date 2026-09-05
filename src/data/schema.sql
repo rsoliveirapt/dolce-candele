@@ -6,6 +6,16 @@
 -- Habilitar extensões necessárias
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- 0. TABELA DE UTILIZADORES / AUTENTICAÇÃO
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role VARCHAR(50) DEFAULT 'admin',
+    name VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 1. TABELA DE FORNECEDORES
 CREATE TABLE IF NOT EXISTS suppliers (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
