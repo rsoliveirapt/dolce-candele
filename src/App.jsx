@@ -27,7 +27,7 @@ const MainLayout = () => {
   // If user is not authenticated OR chooses to view public landing page
   if (!isAuthenticated || viewPublicLanding) {
     return (
-      <div className="min-h-screen bg-[#fdf5ef] dark:bg-[#001229] text-[#002a59] dark:text-[#fadbc7] flex flex-col font-sans transition-colors duration-300">
+      <div className="min-h-screen bg-[#f8ece1] dark:bg-[#001229] text-[#3d1f17] dark:text-[#fadbc7] flex flex-col font-sans transition-colors duration-300">
         
         {/* Public Header */}
         <LandingNavbar
@@ -72,7 +72,7 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fdf5ef] dark:bg-[#001229] text-[#002a59] dark:text-[#fadbc7] flex flex-col font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-[#f8ece1] dark:bg-[#001229] text-[#3d1f17] dark:text-[#fadbc7] flex flex-col font-sans transition-colors duration-300">
       
       {/* Top Admin Status Bar */}
       <div className="bg-[#002a59] text-[#fadbc7] px-4 py-1.5 text-xs font-semibold flex items-center justify-between border-b border-[#fadbc7]/30">
