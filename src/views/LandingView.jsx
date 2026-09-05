@@ -64,26 +64,26 @@ export const LandingView = ({ onOpenLogin }) => {
   ];
 
   return (
-    <div className="bg-[#f8ece1] dark:bg-[#001229] min-h-screen text-[#3d1f17] dark:text-[#fadbc7] transition-colors w-full overflow-x-hidden font-sans">
+    <div className="bg-[#f8ece1] dark:bg-[#001229] min-h-screen text-[#002658] dark:text-[#fadbc7] transition-colors w-full overflow-x-hidden font-sans">
       
       {/* 1. HERO SECTION */}
       <section id="hero" className="relative pt-8 sm:pt-12 pb-16 px-6 sm:px-12 md:px-20 lg:px-28 w-full max-w-[1700px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Hero Column */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             
-            <span className="text-xs font-semibold tracking-[0.3em] text-[#8c6b5e] dark:text-[#fadbc7]/80 uppercase block">
+            <span className="text-xs font-semibold tracking-[0.3em] text-[#002658]/70 dark:text-[#fadbc7]/80 uppercase block">
               VELAS ARTESANAIS
             </span>
 
-            <h1 className="font-serif-luxury text-5xl sm:text-7xl lg:text-8xl font-bold leading-[1.05] text-[#3d1f17] dark:text-[#fadbc7]">
+            <h1 className="font-serif-luxury text-5xl sm:text-7xl lg:text-8xl font-bold leading-[1.05] text-[#002658] dark:text-[#fadbc7]">
               A doçura <br />
               <span className="italic font-normal">que ilumina</span> <br />
               o teu dia <span className="font-sans font-light text-rose-400">♡</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-[#6e4e44] dark:text-[#fadbc7]/90 max-w-lg leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-[#002658]/80 dark:text-[#fadbc7]/90 max-w-lg leading-relaxed font-normal">
               Velas artesanais com o irresistível aspeto de sobremesas. Aromas únicos, detalhes reais e momentos mais doces em tua casa.
             </p>
 
@@ -91,7 +91,7 @@ export const LandingView = ({ onOpenLogin }) => {
             <div className="pt-2">
               <a
                 href="#colecoes"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3d1f17] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-sm hover:bg-[#2b140d] dark:hover:bg-white transition-all shadow-sm group"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-sm hover:bg-[#001a3d] dark:hover:bg-white transition-all shadow-md group"
               >
                 <span>Explora a coleção</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -100,23 +100,23 @@ export const LandingView = ({ onOpenLogin }) => {
 
             {/* Badges Row */}
             <div className="pt-8 grid grid-cols-3 gap-4 max-w-md border-t border-[#ebd0c0] dark:border-[#002a59]">
-              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#5c3e34] dark:text-[#fadbc7]/90">
+              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]/90">
                 <div className="w-8 h-8 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] flex items-center justify-center shrink-0">
-                  <Leaf className="w-4 h-4 text-[#3d1f17] dark:text-[#fadbc7]" />
+                  <Leaf className="w-4 h-4 text-[#002658] dark:text-[#fadbc7]" />
                 </div>
                 <span>Feitas à mão</span>
               </div>
 
-              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#5c3e34] dark:text-[#fadbc7]/90">
+              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]/90">
                 <div className="w-8 h-8 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] flex items-center justify-center shrink-0">
-                  <Heart className="w-4 h-4 text-[#3d1f17] dark:text-[#fadbc7]" />
+                  <Heart className="w-4 h-4 text-[#002658] dark:text-[#fadbc7]" />
                 </div>
                 <span>Ingredientes premium</span>
               </div>
 
-              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#5c3e34] dark:text-[#fadbc7]/90">
+              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]/90">
                 <div className="w-8 h-8 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] flex items-center justify-center shrink-0">
-                  <Gift className="w-4 h-4 text-[#3d1f17] dark:text-[#fadbc7]" />
+                  <Gift className="w-4 h-4 text-[#002658] dark:text-[#fadbc7]" />
                 </div>
                 <span>O presente perfeito</span>
               </div>
@@ -124,33 +124,33 @@ export const LandingView = ({ onOpenLogin }) => {
 
           </div>
 
-          {/* Right Hero Column */}
-          <div className="lg:col-span-5 flex justify-center relative">
+          {/* Right Hero Column (User's Exact Wide Studio Photography Image) */}
+          <div className="lg:col-span-6 flex justify-center relative">
             
             {/* Handwritten calligraphic text floating top right */}
-            <div className="absolute -top-6 right-2 sm:right-6 z-20 font-handwriting text-3xl sm:text-4xl text-[#3d1f17] dark:text-[#fadbc7] rotate-[-5deg] max-w-[210px] leading-tight pointer-events-none drop-shadow-xs">
+            <div className="absolute -top-6 right-2 sm:right-6 z-20 font-handwriting text-3xl sm:text-4xl text-[#002658] dark:text-[#fadbc7] rotate-[-4deg] max-w-[220px] leading-tight pointer-events-none drop-shadow-sm bg-[#f8ece1]/80 dark:bg-[#001229]/80 backdrop-blur-xs px-3 py-1 rounded-xl">
               Parece comida. <br />
               Cheira a felicidade. <span className="text-rose-400">♡</span>
             </div>
 
-            {/* Floating Glass Candle Image */}
-            <div className="relative w-full max-w-md flex flex-col items-center">
+            {/* User Uploaded Hero Banner Image Visual */}
+            <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-2 border-[#ebd0c0] dark:border-[#002a59] group">
               <img
-                src="/strawberry-candle-mockup.jpg"
-                alt="Vela Milkshake de Morango Gourmet"
-                className="w-full h-auto max-h-[580px] object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-3xl"
+                src="/hero-main-banner.jpg"
+                alt="Dolce Candele Vela Artesanal Gourmet de Morango"
+                className="w-full h-[460px] sm:h-[500px] object-cover object-center group-hover:scale-[1.02] transition-transform duration-700"
               />
-
-              {/* Hanging Tag */}
-              <div className="-mt-8 z-10 bg-[#f8efe7]/95 dark:bg-[#001f42]/95 backdrop-blur-md px-5 py-3 rounded-2xl border border-[#3d1f17]/15 text-[11px] text-[#3d1f17] dark:text-[#fadbc7] shadow-md text-center max-w-xs">
-                <span className="font-serif-luxury font-bold tracking-widest block text-xs uppercase text-[#3d1f17] dark:text-[#fadbc7]">
-                  STRAWBERRY DREAM CO.
-                </span>
-                <span className="block text-[9px] text-[#7a584c] dark:text-[#fadbc7]/80 mt-0.5 uppercase tracking-wider">
-                  ARTISANAL DESSERT CANDLE • HANDPOURED SOY WAX
-                </span>
-                <span className="block text-[9px] font-bold mt-1 text-[#3d1f17] dark:text-[#fadbc7]">
-                  NET WT. 12 OZ | EST. 2025
+              <div className="absolute bottom-4 left-4 right-4 bg-[#f8efe7]/95 dark:bg-[#001f42]/95 backdrop-blur-md px-5 py-3 rounded-2xl border border-[#002658]/15 text-[11px] text-[#002658] dark:text-[#fadbc7] shadow-md flex items-center justify-between">
+                <div>
+                  <span className="font-serif-luxury font-bold tracking-widest block text-xs uppercase text-[#002658] dark:text-[#fadbc7]">
+                    STRAWBERRY DREAM CO.
+                  </span>
+                  <span className="block text-[9px] text-[#002658]/80 dark:text-[#fadbc7]/80 mt-0.5 uppercase tracking-wider">
+                    ARTISANAL DESSERT CANDLE • HANDPOURED SOY WAX
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42]">
+                  NET WT. 12 OZ
                 </span>
               </div>
             </div>
@@ -174,17 +174,17 @@ export const LandingView = ({ onOpenLogin }) => {
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-semibold tracking-[0.25em] text-[#8c6b5e] dark:text-[#fadbc7]/80 uppercase block">
+              <span className="text-xs font-semibold tracking-[0.25em] text-[#002658]/70 dark:text-[#fadbc7]/80 uppercase block">
                 AS NOSSAS COLEÇÕES
               </span>
-              <h2 className="font-serif-luxury text-4xl sm:text-6xl font-bold italic text-[#3d1f17] dark:text-[#fadbc7] mt-1">
+              <h2 className="font-serif-luxury text-4xl sm:text-6xl font-bold italic text-[#002658] dark:text-[#fadbc7] mt-1">
                 Sabores que inspiram
               </h2>
             </div>
 
             <a
               href="#colecoes"
-              className="px-6 py-2.5 rounded-full border border-[#3d1f17] text-[#3d1f17] dark:border-[#fadbc7] dark:text-[#fadbc7] font-semibold text-xs hover:bg-[#3d1f17] hover:text-[#f8ece1] dark:hover:bg-[#fadbc7] dark:hover:text-[#001f42] transition-all"
+              className="px-6 py-2.5 rounded-full border border-[#002658] text-[#002658] dark:border-[#fadbc7] dark:text-[#fadbc7] font-semibold text-xs hover:bg-[#002658] hover:text-[#f8ece1] dark:hover:bg-[#fadbc7] dark:hover:text-[#001f42] transition-all"
             >
               Ver todas →
             </a>
@@ -208,10 +208,10 @@ export const LandingView = ({ onOpenLogin }) => {
                 </div>
 
                 <div>
-                  <h3 className="font-serif-luxury text-3xl font-bold text-[#3d1f17] dark:text-[#fadbc7]">
+                  <h3 className="font-serif-luxury text-3xl font-bold text-[#002658] dark:text-[#fadbc7]">
                     {item.title}
                   </h3>
-                  <span className="text-xs font-semibold text-[#7a584c] dark:text-[#fadbc7]/80 group-hover:underline block mt-1">
+                  <span className="text-xs font-semibold text-[#002658]/80 dark:text-[#fadbc7]/80 group-hover:underline block mt-1">
                     {item.subtitle}
                   </span>
                 </div>
@@ -236,30 +236,30 @@ export const LandingView = ({ onOpenLogin }) => {
           {/* Left Text Content */}
           <div className="lg:col-span-5 space-y-6">
             
-            <span className="text-xs font-semibold tracking-[0.25em] text-[#8c6b5e] dark:text-[#fadbc7]/80 uppercase block">
+            <span className="text-xs font-semibold tracking-[0.25em] text-[#002658]/70 dark:text-[#fadbc7]/80 uppercase block">
               MAIS DO QUE VELAS
             </span>
 
-            <h2 className="font-serif-luxury text-4xl sm:text-6xl font-bold leading-tight text-[#3d1f17] dark:text-[#fadbc7]">
+            <h2 className="font-serif-luxury text-4xl sm:text-6xl font-bold leading-tight text-[#002658] dark:text-[#fadbc7]">
               Pequenos detalhes, <br />
               grandes momentos
             </h2>
 
-            <p className="text-base text-[#6e4e44] dark:text-[#fadbc7]/90 leading-relaxed font-normal max-w-md">
+            <p className="text-base text-[#002658]/80 dark:text-[#fadbc7]/90 leading-relaxed font-normal max-w-md">
               Cada vela é cuidadosamente feita à mão, com amor e atenção aos detalhes, para tornar os teus dias mais especiais.
             </p>
 
             <div className="space-y-3 pt-2">
               <a
                 href="#contactos"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3d1f17] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-sm hover:bg-[#2b140d] dark:hover:bg-white transition-all shadow-sm group"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-sm hover:bg-[#001a3d] dark:hover:bg-white transition-all shadow-md group"
               >
                 <span>A nossa história</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
 
               {/* Handwritten calligraphic annotation below button */}
-              <div className="font-handwriting text-3xl sm:text-4xl text-[#3d1f17] dark:text-[#fadbc7] pt-2 pl-2">
+              <div className="font-handwriting text-3xl sm:text-4xl text-[#002658] dark:text-[#fadbc7] pt-2 pl-2">
                 Handmade with love <span className="text-rose-400">♡</span>
               </div>
             </div>
@@ -282,36 +282,36 @@ export const LandingView = ({ onOpenLogin }) => {
             
             <div className="p-4 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] border border-[#d8b8a7]/60 flex items-center gap-4 shadow-xs px-6">
               <div className="w-10 h-10 rounded-full bg-[#f8ece1] dark:bg-[#001f42] flex items-center justify-center shrink-0">
-                <Leaf className="w-5 h-5 text-[#3d1f17] dark:text-[#fadbc7]" />
+                <Leaf className="w-5 h-5 text-[#002658] dark:text-[#fadbc7]" />
               </div>
-              <span className="text-xs font-semibold text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
                 Cera de soja natural
               </span>
             </div>
 
             <div className="p-4 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] border border-[#d8b8a7]/60 flex items-center gap-4 shadow-xs px-6">
               <div className="w-10 h-10 rounded-full bg-[#f8ece1] dark:bg-[#001f42] flex items-center justify-center shrink-0">
-                <Sparkles className="w-5 h-5 text-[#3d1f17] dark:text-[#fadbc7]" />
+                <Sparkles className="w-5 h-5 text-[#002658] dark:text-[#fadbc7]" />
               </div>
-              <span className="text-xs font-semibold text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
                 Aromas reais e envolventes
               </span>
             </div>
 
             <div className="p-4 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] border border-[#d8b8a7]/60 flex items-center gap-4 shadow-xs px-6">
               <div className="w-10 h-10 rounded-full bg-[#f8ece1] dark:bg-[#001f42] flex items-center justify-center shrink-0">
-                <Heart className="w-5 h-5 text-[#3d1f17] dark:text-[#fadbc7]" />
+                <Heart className="w-5 h-5 text-[#002658] dark:text-[#fadbc7]" />
               </div>
-              <span className="text-xs font-semibold text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
                 Design que conta histórias
               </span>
             </div>
 
             <div className="p-4 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] border border-[#d8b8a7]/60 flex items-center gap-4 shadow-xs px-6">
               <div className="w-10 h-10 rounded-full bg-[#f8ece1] dark:bg-[#001f42] flex items-center justify-center shrink-0">
-                <Gift className="w-5 h-5 text-[#3d1f17] dark:text-[#fadbc7]" />
+                <Gift className="w-5 h-5 text-[#002658] dark:text-[#fadbc7]" />
               </div>
-              <span className="text-xs font-semibold text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
                 Ideal para oferecer
               </span>
             </div>
@@ -327,10 +327,10 @@ export const LandingView = ({ onOpenLogin }) => {
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
-              <span className="font-serif-luxury text-4xl font-bold italic text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="font-serif-luxury text-4xl font-bold italic text-[#002658] dark:text-[#fadbc7]">
                 Dolce Candele
               </span>
-              <p className="text-xs text-[#7a584c] dark:text-[#fadbc7]/80 font-normal">
+              <p className="text-xs text-[#002658]/80 dark:text-[#fadbc7]/80 font-normal">
                 Velas Artesanais Gourmet & Sobremesas em Cera — Feitas à mão em Portugal.
               </p>
             </div>
@@ -340,7 +340,7 @@ export const LandingView = ({ onOpenLogin }) => {
                 href="https://www.instagram.com/dolcecandele.pt/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3.5 rounded-full bg-[#3d1f17] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-xs hover:bg-[#2b140d] dark:hover:bg-white transition-all flex items-center gap-2 shadow-sm"
+                className="px-6 py-3.5 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-xs hover:bg-[#001a3d] dark:hover:bg-white transition-all flex items-center gap-2 shadow-sm"
               >
                 <InstagramIcon className="w-4 h-4" />
                 <span>@dolcecandele.pt</span>
@@ -348,7 +348,7 @@ export const LandingView = ({ onOpenLogin }) => {
 
               <button
                 onClick={onOpenLogin}
-                className="px-6 py-3.5 rounded-full border border-[#3d1f17] text-[#3d1f17] dark:border-[#fadbc7] dark:text-[#fadbc7] font-semibold text-xs hover:bg-[#3d1f17] hover:text-[#f8ece1] dark:hover:bg-[#fadbc7] dark:hover:text-[#001f42] transition-all flex items-center gap-2"
+                className="px-6 py-3.5 rounded-full border border-[#002658] text-[#002658] dark:border-[#fadbc7] dark:text-[#fadbc7] font-semibold text-xs hover:bg-[#002658] hover:text-[#f8ece1] dark:hover:bg-[#fadbc7] dark:hover:text-[#001f42] transition-all flex items-center gap-2"
               >
                 <Lock className="w-3.5 h-3.5" />
                 <span>Gestão Admin</span>
@@ -356,7 +356,7 @@ export const LandingView = ({ onOpenLogin }) => {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-[#d8b8a7]/40 text-center text-xs text-[#8c6b5e] dark:text-[#fadbc7]/60">
+          <div className="pt-6 border-t border-[#d8b8a7]/40 text-center text-xs text-[#002658]/70 dark:text-[#fadbc7]/60">
             © 2026 Dolce Candele. Todos os direitos reservados.
           </div>
 
@@ -377,21 +377,21 @@ export const LandingView = ({ onOpenLogin }) => {
               className="w-full h-80 object-cover rounded-2xl border border-[#ebd0c0]"
             />
 
-            <p className="text-xs text-[#5c3e34] dark:text-stone-300 font-medium leading-relaxed">
+            <p className="text-xs text-[#002658]/90 dark:text-stone-300 font-medium leading-relaxed">
               {selectedCandleModal.description}
             </p>
 
             <div className="p-3.5 rounded-2xl bg-[#f8ece1] dark:bg-[#002a59] border border-[#ebd0c0] text-xs">
-              <span className="text-[10px] font-bold text-[#8c6b5e] dark:text-[#fadbc7]/70 uppercase tracking-wider block">
+              <span className="text-[10px] font-bold text-[#002658]/70 dark:text-[#fadbc7]/70 uppercase tracking-wider block">
                 Notas Olfativas
               </span>
-              <span className="font-semibold text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="font-semibold text-[#002658] dark:text-[#fadbc7]">
                 {selectedCandleModal.notes}
               </span>
             </div>
 
             <div className="pt-3 border-t border-[#ebd0c0] flex items-center justify-between">
-              <span className="text-lg font-bold text-[#3d1f17] dark:text-[#fadbc7]">
+              <span className="text-lg font-bold text-[#002658] dark:text-[#fadbc7]">
                 {selectedCandleModal.price}
               </span>
 
@@ -399,7 +399,7 @@ export const LandingView = ({ onOpenLogin }) => {
                 href="https://www.instagram.com/dolcecandele.pt/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 rounded-full bg-[#3d1f17] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-xs flex items-center gap-2 shadow-sm"
+                className="px-6 py-3 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-xs flex items-center gap-2 shadow-sm"
               >
                 <InstagramIcon className="w-4 h-4" />
                 <span>Encomendar via Instagram</span>

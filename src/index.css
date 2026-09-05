@@ -10,15 +10,14 @@
     --font-handwriting: 'Caveat', cursive;
     
     --brand-light: #fadbc7;
-    --brand-dark: #002a59;
-    --brand-nude-bg: #f8ebe0;
-    --brand-chocolate: #3a1f18;
+    --brand-dark: #002658;
+    --brand-nude-bg: #f8ece1;
   }
 
   body {
     font-family: var(--font-body);
     background-color: #f8ece1;
-    color: #3d1f17;
+    color: #002658;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
