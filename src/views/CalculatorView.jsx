@@ -29,12 +29,10 @@ export const CalculatorView = () => {
   const [targetMarginPercentage, setTargetMarginPercentage] = useState(65.0);
 
   // Recipe items: array of { ingredientId, quantity, unit }
-  const [recipe, setRecipe] = useState([
-    { ingredientId: ingredients[0]?.id || '', quantity: 150, unit: ingredients[0]?.purchaseUnit || 'g' },
-    { ingredientId: ingredients[3]?.id || '', quantity: 15, unit: ingredients[3]?.purchaseUnit || 'ml' },
-    { ingredientId: ingredients[6]?.id || '', quantity: 1, unit: 'unidade' },
-    { ingredientId: ingredients[8]?.id || '', quantity: 1, unit: 'unidade' }
-  ]);
+  const [recipe, setRecipe] = useState(() => {
+    if (!ingredients || ingredients.length === 0) return [];
+    return [{ ingredientId: ingredients[0].id, quantity: 150, unit: ingredients[0].purchaseUnit || 'g' }];
+  });
 
   const [isSavedNotice, setIsSavedNotice] = useState(false);
 

@@ -107,20 +107,20 @@ export const Sidebar = ({ isMobileOpen, onCloseMobile }) => {
                   <button
                     key={item.id}
                     onClick={() => handleSelect(item.id)}
-                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-xs font-extrabold transition-all ${
+                    className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-xs font-extrabold transition-all text-left ${
                       isActive
                         ? 'bg-[#002a59] text-[#fadbc7] shadow-md shadow-[#002a59]/20 border border-[#fadbc7]/40'
                         : 'text-[#002a59] dark:text-[#fadbc7] hover:bg-[#fadbc7]/40 hover:text-[#002a59]'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#fadbc7]' : 'text-[#002a59]/70 dark:text-[#fadbc7]/80'}`} />
-                      <span>{item.label}</span>
+                    <div className="flex items-center gap-3 min-w-0 flex-1 text-left">
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#fadbc7]' : 'text-[#002a59]/70 dark:text-[#fadbc7]/80'}`} />
+                      <span className="text-left font-extrabold leading-tight text-xs">{item.label}</span>
                     </div>
 
                     {item.badge && (
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ml-2 whitespace-nowrap ${
                           item.badgeAlert
                             ? 'bg-rose-600 text-white animate-pulse'
                             : isActive
