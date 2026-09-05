@@ -172,9 +172,6 @@ export const DashboardView = () => {
           <div className="flex items-center gap-4">
             <img src="/dolce-candele-logo.jpg" alt="Logo Dolce Candele" className="w-16 h-16 rounded-2xl border-2 border-[#fadbc7] shadow-lg object-cover bg-white" />
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fadbc7]/20 backdrop-blur-md text-[#fadbc7] text-xs font-bold mb-1">
-                <Sparkles className="w-3.5 h-3.5" /> Visão Operacional & Financeira
-              </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 Dolce Candele 🕯️
               </h1>

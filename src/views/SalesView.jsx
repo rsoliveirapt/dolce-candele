@@ -58,9 +58,6 @@ export const SalesView = ({ onOpenQuickSale }) => {
       {/* Header Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl glass-card bg-gradient-to-r from-[#fadbc7]/40 via-white to-[#fadbc7]/20 border border-[#fadbc7]">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#002a59] text-[#fadbc7] text-xs font-extrabold mb-2">
-            <ShoppingBag className="w-3.5 h-3.5 text-[#fadbc7]" /> Módulo de Vendas & Encomendas
-          </div>
           <h1 className="text-2xl font-extrabold text-[#002a59] dark:text-[#fadbc7] tracking-tight">
             Registo de Pedidos Dolce Candele 🛍️
           </h1>

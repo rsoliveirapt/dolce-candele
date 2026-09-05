@@ -184,9 +184,6 @@ EXECUTE FUNCTION deduct_stock_on_sale();
       {/* Header Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl glass-card bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/5 border border-amber-200/60 dark:border-stone-800">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 text-xs font-bold mb-2">
-            <Settings className="w-3.5 h-3.5" /> Definições & Base de Dados Supabase
-          </div>
           <h1 className="text-2xl font-extrabold text-stone-900 dark:text-stone-100 tracking-tight">
             Configuração & Integração de Dados ⚙️
           </h1>
