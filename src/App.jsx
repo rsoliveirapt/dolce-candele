@@ -36,7 +36,7 @@ const MainLayout = () => {
         />
 
         {/* Public Landing View */}
-        <div className="flex-1 max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div className="flex-1 w-full m-0 p-0 overflow-x-hidden">
           <LandingView onOpenLogin={() => setIsLoginModalOpen(true)} />
         </div>
 

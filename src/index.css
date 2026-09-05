@@ -17,8 +17,8 @@
 
   body {
     font-family: var(--font-body);
-    background-color: #fdf5ef;
-    color: #002a59;
+    background-color: #f8ece1;
+    color: #3d1f17;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
