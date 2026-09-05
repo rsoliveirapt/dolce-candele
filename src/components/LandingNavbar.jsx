@@ -8,24 +8,26 @@ export const LandingNavbar = ({ onOpenLogin, onGoToDashboard }) => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#f8ece1]/90 dark:bg-[#001f42]/90 backdrop-blur-md border-b border-[#ebd0c0]/40 transition-colors">
+    <header className="sticky top-0 z-50 w-full bg-[#f8ece1]/90 dark:bg-[#001f42]/90 backdrop-blur-md border-b border-[#ebd0c0]/40 transition-colors">
       <div className="w-full max-w-[1700px] mx-auto px-6 sm:px-12 md:px-20 lg:px-28 h-20 flex items-center justify-between gap-4">
         
-        {/* Left: Brand Name Logo */}
+        {/* Left: Official Brand Logo Image */}
         <div className="flex items-center">
-          <a href="#hero" className="flex items-center gap-2 group">
-            <span className="font-serif-luxury text-3xl font-bold tracking-tight text-[#002658] dark:text-[#fadbc7] group-hover:opacity-80 transition-opacity italic">
-              Dolce Candele
-            </span>
+          <a href="#hero" className="flex items-center gap-3 group">
+            <img
+              src="/dolce-candele-text-nobg.png"
+              alt="Dolce Candele"
+              className="h-9 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform"
+            />
           </a>
         </div>
 
         {/* Center: Navigation Links */}
-        <nav className="hidden md:flex items-center gap-10 text-sm font-medium text-[#002658]/80 dark:text-[#fadbc7]/90">
-          <a href="#hero" className="hover:text-[#002658] dark:hover:text-white transition-colors">Início</a>
-          <a href="#colecoes" className="hover:text-[#002658] dark:hover:text-white transition-colors">Coleções</a>
-          <a href="#sobre" className="hover:text-[#002658] dark:hover:text-white transition-colors">Sobre</a>
-          <a href="#contactos" className="hover:text-[#002658] dark:hover:text-white transition-colors">Contactos</a>
+        <nav className="hidden md:flex items-center gap-10 text-sm font-semibold text-[#002658] dark:text-[#fadbc7]/90">
+          <a href="#hero" className="hover:opacity-80 transition-opacity">Início</a>
+          <a href="#colecoes" className="hover:opacity-80 transition-opacity">Coleções</a>
+          <a href="#sobre" className="hover:opacity-80 transition-opacity">Sobre</a>
+          <a href="#contactos" className="hover:opacity-80 transition-opacity">Contactos</a>
         </nav>
 
         {/* Right Actions */}

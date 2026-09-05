@@ -66,14 +66,26 @@ export const LandingView = ({ onOpenLogin }) => {
   return (
     <div className="bg-[#f8ece1] dark:bg-[#001229] min-h-screen text-[#002658] dark:text-[#fadbc7] transition-colors w-full overflow-x-hidden font-sans">
       
-      {/* 1. HERO SECTION */}
-      <section id="hero" className="relative pt-8 sm:pt-12 pb-16 px-6 sm:px-12 md:px-20 lg:px-28 w-full max-w-[1700px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Left Hero Column */}
-          <div className="lg:col-span-6 space-y-6">
+      {/* 1. HERO SECTION (FULLSCREEN BACKGROUND BANNER) */}
+      <section
+        id="hero"
+        className="relative w-full h-[85vh] min-h-[640px] max-h-[900px] bg-cover bg-center flex items-center overflow-hidden"
+        style={{ backgroundImage: "url('/hero-main-banner.jpg')" }}
+      >
+        {/* Soft Left Gradient Overlay for crisp text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f8ece1] via-[#f8ece1]/90 to-transparent lg:via-[#f8ece1]/75 pointer-events-none" />
+
+        {/* Floating Calligraphy Note (Top Right) */}
+        <div className="absolute top-10 right-6 sm:right-16 z-20 font-handwriting text-3xl sm:text-5xl text-[#002658] dark:text-[#fadbc7] rotate-[-4deg] max-w-[280px] leading-tight pointer-events-none drop-shadow-md bg-[#f8ece1]/80 dark:bg-[#001229]/80 backdrop-blur-md p-4 rounded-2xl border border-[#002658]/10 hidden sm:block">
+          Parece comida. <br />
+          Cheira a felicidade. <span className="text-rose-400">♡</span>
+        </div>
+
+        {/* Hero Text Content */}
+        <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 sm:px-12 md:px-20 lg:px-28">
+          <div className="max-w-2xl space-y-6">
             
-            <span className="text-xs font-semibold tracking-[0.3em] text-[#002658]/70 dark:text-[#fadbc7]/80 uppercase block">
+            <span className="text-xs font-bold tracking-[0.3em] text-[#002658]/80 dark:text-[#fadbc7]/80 uppercase block">
               VELAS ARTESANAIS
             </span>
 
@@ -83,15 +95,15 @@ export const LandingView = ({ onOpenLogin }) => {
               o teu dia <span className="font-sans font-light text-rose-400">♡</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-[#002658]/80 dark:text-[#fadbc7]/90 max-w-lg leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-[#002658]/90 dark:text-[#fadbc7]/90 max-w-lg leading-relaxed font-medium">
               Velas artesanais com o irresistível aspeto de sobremesas. Aromas únicos, detalhes reais e momentos mais doces em tua casa.
             </p>
 
-            {/* Primary Action Button */}
+            {/* Primary CTA Button */}
             <div className="pt-2">
               <a
                 href="#colecoes"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-sm hover:bg-[#001a3d] dark:hover:bg-white transition-all shadow-md group"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-sm hover:bg-[#001a3d] dark:hover:bg-white transition-all shadow-xl group"
               >
                 <span>Explora a coleção</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -99,23 +111,23 @@ export const LandingView = ({ onOpenLogin }) => {
             </div>
 
             {/* Badges Row */}
-            <div className="pt-8 grid grid-cols-3 gap-4 max-w-md border-t border-[#ebd0c0] dark:border-[#002a59]">
-              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]/90">
-                <div className="w-8 h-8 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] flex items-center justify-center shrink-0">
+            <div className="pt-6 grid grid-cols-3 gap-4 max-w-md border-t border-[#002658]/20 dark:border-[#002a59]">
+              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
+                <div className="w-8 h-8 rounded-full bg-[#002658]/10 dark:bg-[#002a59] flex items-center justify-center shrink-0">
                   <Leaf className="w-4 h-4 text-[#002658] dark:text-[#fadbc7]" />
                 </div>
                 <span>Feitas à mão</span>
               </div>
 
-              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]/90">
-                <div className="w-8 h-8 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
+                <div className="w-8 h-8 rounded-full bg-[#002658]/10 dark:bg-[#002a59] flex items-center justify-center shrink-0">
                   <Heart className="w-4 h-4 text-[#002658] dark:text-[#fadbc7]" />
                 </div>
                 <span>Ingredientes premium</span>
               </div>
 
-              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]/90">
-                <div className="w-8 h-8 rounded-full bg-[#ebd0c0] dark:bg-[#002a59] flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-2.5 text-xs font-semibold text-[#002658] dark:text-[#fadbc7]">
+                <div className="w-8 h-8 rounded-full bg-[#002658]/10 dark:bg-[#002a59] flex items-center justify-center shrink-0">
                   <Gift className="w-4 h-4 text-[#002658] dark:text-[#fadbc7]" />
                 </div>
                 <span>O presente perfeito</span>
@@ -123,40 +135,6 @@ export const LandingView = ({ onOpenLogin }) => {
             </div>
 
           </div>
-
-          {/* Right Hero Column (User's Exact Wide Studio Photography Image) */}
-          <div className="lg:col-span-6 flex justify-center relative">
-            
-            {/* Handwritten calligraphic text floating top right */}
-            <div className="absolute -top-6 right-2 sm:right-6 z-20 font-handwriting text-3xl sm:text-4xl text-[#002658] dark:text-[#fadbc7] rotate-[-4deg] max-w-[220px] leading-tight pointer-events-none drop-shadow-sm bg-[#f8ece1]/80 dark:bg-[#001229]/80 backdrop-blur-xs px-3 py-1 rounded-xl">
-              Parece comida. <br />
-              Cheira a felicidade. <span className="text-rose-400">♡</span>
-            </div>
-
-            {/* User Uploaded Hero Banner Image Visual */}
-            <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-2 border-[#ebd0c0] dark:border-[#002a59] group">
-              <img
-                src="/hero-main-banner.jpg"
-                alt="Dolce Candele Vela Artesanal Gourmet de Morango"
-                className="w-full h-[460px] sm:h-[500px] object-cover object-center group-hover:scale-[1.02] transition-transform duration-700"
-              />
-              <div className="absolute bottom-4 left-4 right-4 bg-[#f8efe7]/95 dark:bg-[#001f42]/95 backdrop-blur-md px-5 py-3 rounded-2xl border border-[#002658]/15 text-[11px] text-[#002658] dark:text-[#fadbc7] shadow-md flex items-center justify-between">
-                <div>
-                  <span className="font-serif-luxury font-bold tracking-widest block text-xs uppercase text-[#002658] dark:text-[#fadbc7]">
-                    STRAWBERRY DREAM CO.
-                  </span>
-                  <span className="block text-[9px] text-[#002658]/80 dark:text-[#fadbc7]/80 mt-0.5 uppercase tracking-wider">
-                    ARTISANAL DESSERT CANDLE • HANDPOURED SOY WAX
-                  </span>
-                </div>
-                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#002658] text-[#f8ece1] dark:bg-[#fadbc7] dark:text-[#001f42]">
-                  NET WT. 12 OZ
-                </span>
-              </div>
-            </div>
-
-          </div>
-
         </div>
       </section>
 
@@ -174,7 +152,7 @@ export const LandingView = ({ onOpenLogin }) => {
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-semibold tracking-[0.25em] text-[#002658]/70 dark:text-[#fadbc7]/80 uppercase block">
+              <span className="text-xs font-bold tracking-[0.25em] text-[#002658]/80 dark:text-[#fadbc7]/80 uppercase block">
                 AS NOSSAS COLEÇÕES
               </span>
               <h2 className="font-serif-luxury text-4xl sm:text-6xl font-bold italic text-[#002658] dark:text-[#fadbc7] mt-1">
@@ -236,7 +214,7 @@ export const LandingView = ({ onOpenLogin }) => {
           {/* Left Text Content */}
           <div className="lg:col-span-5 space-y-6">
             
-            <span className="text-xs font-semibold tracking-[0.25em] text-[#002658]/70 dark:text-[#fadbc7]/80 uppercase block">
+            <span className="text-xs font-bold tracking-[0.25em] text-[#002658]/80 dark:text-[#fadbc7]/80 uppercase block">
               MAIS DO QUE VELAS
             </span>
 
@@ -245,7 +223,7 @@ export const LandingView = ({ onOpenLogin }) => {
               grandes momentos
             </h2>
 
-            <p className="text-base text-[#002658]/80 dark:text-[#fadbc7]/90 leading-relaxed font-normal max-w-md">
+            <p className="text-base text-[#002658]/90 dark:text-[#fadbc7]/90 leading-relaxed font-normal max-w-md">
               Cada vela é cuidadosamente feita à mão, com amor e atenção aos detalhes, para tornar os teus dias mais especiais.
             </p>
 
@@ -327,9 +305,11 @@ export const LandingView = ({ onOpenLogin }) => {
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
-              <span className="font-serif-luxury text-4xl font-bold italic text-[#002658] dark:text-[#fadbc7]">
-                Dolce Candele
-              </span>
+              <img
+                src="/dolce-candele-text-nobg.png"
+                alt="Dolce Candele"
+                className="h-10 w-auto object-contain mx-auto md:mx-0"
+              />
               <p className="text-xs text-[#002658]/80 dark:text-[#fadbc7]/80 font-normal">
                 Velas Artesanais Gourmet & Sobremesas em Cera — Feitas à mão em Portugal.
               </p>
