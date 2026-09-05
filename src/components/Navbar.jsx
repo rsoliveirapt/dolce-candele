@@ -24,7 +24,7 @@ export const Navbar = ({ onOpenQuickSale, onToggleMobileSidebar }) => {
 
   return (
     <header className="sticky top-0 z-30 w-full glass-panel border-b border-[#fadbc7] bg-[#fdf5ef]/90 dark:bg-[#002a59]/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div className="max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         
         {/* Left: Mobile Menu Toggle & Brand Logo */}
         <div className="flex items-center gap-3">
