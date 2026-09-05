@@ -1,90 +1,82 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Sun, Moon, Sparkles, UserCheck, LayoutDashboard } from 'lucide-react';
-
-const InstagramIcon = ({ className = "w-4 h-4" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-);
+import { Search, ShoppingBag, Lock, Sun, Moon, LayoutDashboard } from 'lucide-react';
 
 export const LandingNavbar = ({ onOpenLogin, onGoToDashboard }) => {
   const { theme, toggleTheme } = useApp();
-  const { isAuthenticated, currentUser } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 w-full glass-panel border-b border-[#fadbc7] bg-[#fdf5ef]/90 dark:bg-[#002a59]/90 backdrop-blur-md">
-      <div className="max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 w-full bg-[#f8ebe0]/90 dark:bg-[#001f42]/90 backdrop-blur-md border-b border-[#ebd3c5]/50 transition-colors">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
         
-        {/* Left: Brand Logo */}
-        <div className="flex items-center gap-3">
-          <a href="#hero" className="flex items-center gap-3 group">
-            <img
-              src="/dolce-candele-text-nobg.png"
-              alt="Dolce Candele"
-              className="h-11 w-auto object-contain group-hover:scale-105 transition-transform"
-            />
-            <div className="hidden sm:block pl-3 border-l border-[#fadbc7]">
-              <span className="text-xs font-extrabold text-[#002a59] dark:text-[#fadbc7] block tracking-tight">
-                Dolce Candele
-              </span>
-              <span className="text-[10px] font-semibold text-[#002a59]/70 dark:text-[#fadbc7]/80 block">
-                Velas Artesanais Gourmet & Sobremesas em Cera
-              </span>
-            </div>
+        {/* Left: Brand Name Logo */}
+        <div className="flex items-center">
+          <a href="#hero" className="flex items-center gap-2 group">
+            <span className="font-serif-luxury text-3xl font-bold tracking-tight text-[#3a1f18] dark:text-[#fadbc7] group-hover:opacity-80 transition-opacity italic">
+              Dolce Candele
+            </span>
           </a>
         </div>
 
-        {/* Center: Public Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-extrabold text-[#002a59] dark:text-[#fadbc7]">
-          <a href="#hero" className="hover:text-[#001f42] dark:hover:text-white transition-colors">Início</a>
-          <a href="#colecao-3d" className="hover:text-[#001f42] dark:hover:text-white transition-colors">Coleção 3D</a>
-          <a href="#sobre" className="hover:text-[#001f42] dark:hover:text-white transition-colors">Sobre a Marca</a>
-          <a href="#encomendas" className="hover:text-[#001f42] dark:hover:text-white transition-colors">Encomendas</a>
+        {/* Center: Navigation Links */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#5a3a30] dark:text-[#fadbc7]/90">
+          <a href="#hero" className="hover:text-[#3a1f18] dark:hover:text-white transition-colors">Início</a>
+          <a href="#colecoes" className="hover:text-[#3a1f18] dark:hover:text-white transition-colors">Coleções</a>
+          <a href="#sobre" className="hover:text-[#3a1f18] dark:hover:text-white transition-colors">Sobre</a>
+          <a href="#contactos" className="hover:text-[#3a1f18] dark:hover:text-white transition-colors">Contactos</a>
         </nav>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
 
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-xl text-[#002a59] hover:bg-[#fadbc7]/60 dark:text-[#fadbc7] dark:hover:bg-[#003b7a] transition-all flex items-center gap-1.5 text-xs font-semibold"
+            className="p-2 rounded-full text-[#3a1f18] hover:bg-[#ebd3c5]/50 dark:text-[#fadbc7] dark:hover:bg-[#002a59] transition-all"
             title={theme === 'dark' ? 'Mudar para Light Mode ☀️' : 'Mudar para Dark Mode 🌙'}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-[#fadbc7]" /> : <Moon className="w-4 h-4 text-[#002a59]" />}
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-[#fadbc7]" /> : <Moon className="w-4 h-4 text-[#3a1f18]" />}
           </button>
 
-          {/* Instagram Link */}
-          <a
-            href="https://www.instagram.com/dolcecandele.pt/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 rounded-xl text-[#002a59] hover:bg-[#fadbc7]/60 dark:text-[#fadbc7] transition-colors hidden sm:flex items-center gap-1.5 text-xs font-semibold"
+          {/* Search Icon */}
+          <button
+            className="p-2 rounded-full text-[#3a1f18] dark:text-[#fadbc7] hover:bg-[#ebd3c5]/50 dark:hover:bg-[#002a59] transition-all"
+            aria-label="Pesquisar"
           >
-            <InstagramIcon className="w-4 h-4 text-[#002a59] dark:text-[#fadbc7]" />
-            <span className="hidden lg:inline">@dolcecandele.pt</span>
-          </a>
+            <Search className="w-4 h-4" />
+          </button>
 
-          {/* Login / Admin Dashboard CTA */}
+          {/* Shopping Bag Icon with Badge */}
+          <div className="relative">
+            <button
+              className="p-2 rounded-full text-[#3a1f18] dark:text-[#fadbc7] hover:bg-[#ebd3c5]/50 dark:hover:bg-[#002a59] transition-all"
+              aria-label="Carrinho de Compras"
+            >
+              <ShoppingBag className="w-4 h-4" />
+            </button>
+            <span className="absolute top-0 right-0 w-4 h-4 bg-[#3a1f18] dark:bg-[#fadbc7] text-white dark:text-[#001f42] rounded-full text-[9px] font-bold flex items-center justify-center">
+              0
+            </span>
+          </div>
+
+          {/* CTA Pill Button */}
           {isAuthenticated ? (
             <button
               onClick={onGoToDashboard}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#002a59] text-[#fadbc7] hover:bg-[#001f42] font-extrabold text-xs shadow-md border border-[#fadbc7]/40 transition-all"
+              className="px-5 py-2.5 rounded-full bg-[#3a1f18] text-[#f8ebe0] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-xs hover:bg-[#2b150f] dark:hover:bg-white transition-all shadow-sm flex items-center gap-2"
             >
-              <LayoutDashboard className="w-4 h-4 text-[#fadbc7]" />
-              <span>Painel de Gestão</span>
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              <span>Painel Gestão</span>
             </button>
           ) : (
             <button
               onClick={onOpenLogin}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#002a59] text-[#fadbc7] hover:bg-[#001f42] font-extrabold text-xs shadow-md border border-[#fadbc7]/40 transition-all"
+              className="px-5 py-2.5 rounded-full bg-[#3a1f18] text-[#f8ebe0] dark:bg-[#fadbc7] dark:text-[#001f42] font-semibold text-xs hover:bg-[#2b150f] dark:hover:bg-white transition-all shadow-sm flex items-center gap-2"
             >
-              <Lock className="w-4 h-4 text-[#fadbc7]" />
-              <span>Acesso Reservado / Gestão</span>
+              <Lock className="w-3.5 h-3.5" />
+              <span>Descobre agora</span>
             </button>
           )}
 

@@ -6,9 +6,13 @@
   :root {
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-serif-luxury: 'Cormorant Garamond', Georgia, serif;
+    --font-handwriting: 'Caveat', cursive;
     
     --brand-light: #fadbc7;
     --brand-dark: #002a59;
+    --brand-nude-bg: #f8ebe0;
+    --brand-chocolate: #3a1f18;
   }
 
   body {
@@ -26,6 +30,14 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+}
+
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive;
 }
 
 .glass-panel {
