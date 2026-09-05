@@ -5,8 +5,8 @@ import { Mail, Key, LogIn, Lock } from 'lucide-react';
 
 export const LoginModal = ({ isOpen, onClose }) => {
   const { login } = useAuth();
-  const [email, setEmail] = useState('admin@dolcecandele.pt');
-  const [password, setPassword] = useState('dolce2026');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = (e) => {

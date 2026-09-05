@@ -299,8 +299,15 @@ export const LandingView = ({ onOpenLogin }) => {
         </div>
       </section>
 
+      {/* SEAMLESS TRANSITION DIVIDER BETWEEN SOBRE (#f8ece1) AND FOOTER (#ebd0c0) */}
+      <div className="w-full overflow-hidden leading-none text-[#ebd0c0] dark:text-[#001733] bg-[#f8ece1] dark:bg-[#001229]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-12 sm:h-16">
+          <path d="M0,0 C300,90 600,0 900,60 C1050,90 1150,30 1200,0 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+
       {/* 4. FOOTER & CONTACTS */}
-      <footer id="contactos" className="bg-[#ebd0c0] dark:bg-[#001733] pt-14 pb-8 border-t border-[#d8b8a7]/60 w-full">
+      <footer id="contactos" className="bg-[#ebd0c0] dark:bg-[#001733] pt-8 pb-8 w-full">
         <div className="max-w-[1700px] mx-auto px-6 sm:px-12 md:px-20 lg:px-28 space-y-8">
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
