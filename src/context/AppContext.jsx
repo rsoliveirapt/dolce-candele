@@ -19,6 +19,20 @@ export const useApp = () => {
 };
 
 export const AppProvider = ({ children }) => {
+  // One-time legacy demo data clearing migration
+  useEffect(() => {
+    const isCleared = localStorage.getItem('dc_demo_cleared_v2');
+    if (!isCleared) {
+      localStorage.removeItem('dc_suppliers');
+      localStorage.removeItem('dc_ingredients');
+      localStorage.removeItem('dc_products');
+      localStorage.removeItem('dc_fixed_costs');
+      localStorage.removeItem('dc_sales');
+      localStorage.removeItem('dc_expenses');
+      localStorage.setItem('dc_demo_cleared_v2', 'true');
+    }
+  }, []);
+
   // LocalStorage State Initialization
   const [suppliers, setSuppliers] = useState(() => {
     const saved = localStorage.getItem('dc_suppliers');
@@ -124,12 +138,10 @@ export const AppProvider = ({ children }) => {
     const overheadCost = rawMaterialCost * ((product.overheadPercentage || 0) / 100);
     const totalCost = rawMaterialCost + laborCost + overheadCost;
 
-    // Margin Calculation: Suggested Price based on Target Margin %
-    // SuggestedPrice = TotalCost / (1 - targetMargin / 100)
     const targetMargin = product.targetMarginPercentage || 60;
     const marginFactor = Math.max(0.05, 1 - (targetMargin / 100));
     const suggestedPrice = totalCost > 0 ? totalCost / marginFactor : 0;
-    const minPrice = totalCost; // Break-even sale price
+    const minPrice = totalCost;
 
     return {
       rawMaterialCost,
@@ -223,7 +235,6 @@ export const AppProvider = ({ children }) => {
       saleDate: newSale.saleDate || new Date().toISOString()
     };
 
-    // Auto Deduct Stock for each sold item's recipe ingredients
     let updatedIngredients = [...ingredients];
     if (saleRecord.items && Array.isArray(saleRecord.items)) {
       saleRecord.items.forEach(saleItem => {
@@ -285,13 +296,18 @@ export const AppProvider = ({ children }) => {
   // DATA MANAGEMENT & RESET
   // ==========================================
   const resetToDemoData = () => {
-    setSuppliers(initialSuppliers);
-    setIngredients(initialIngredients);
-    setProducts(initialProducts);
-    setFixedCosts(initialFixedCosts);
-    setSales(initialSales);
-    setExpenses(initialExpenses);
-    localStorage.clear();
+    setSuppliers([]);
+    setIngredients([]);
+    setProducts([]);
+    setFixedCosts([]);
+    setSales([]);
+    setExpenses([]);
+    localStorage.removeItem('dc_suppliers');
+    localStorage.removeItem('dc_ingredients');
+    localStorage.removeItem('dc_products');
+    localStorage.removeItem('dc_fixed_costs');
+    localStorage.removeItem('dc_sales');
+    localStorage.removeItem('dc_expenses');
   };
 
   const exportDataJSON = () => {
