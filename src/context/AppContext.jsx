@@ -53,6 +53,25 @@ export const AppProvider = ({ children }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Theme State (light | dark)
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('dc_theme');
+    return saved || 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('dc_theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
+
   // Persist State Changes
   useEffect(() => {
     localStorage.setItem('dc_suppliers', JSON.stringify(suppliers));
@@ -322,6 +341,9 @@ export const AppProvider = ({ children }) => {
         setActiveTab,
         searchTerm,
         setSearchTerm,
+        theme,
+        setTheme,
+        toggleTheme,
         lowStockIngredients,
         // Calculators
         calculateIngredientUnitCost,

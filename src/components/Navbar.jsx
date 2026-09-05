@@ -4,7 +4,9 @@ import {
   Bell,
   Search,
   Sparkles,
-  Menu
+  Menu,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -17,7 +19,7 @@ const InstagramIcon = ({ className = "w-4 h-4" }) => (
 );
 
 export const Navbar = ({ onOpenQuickSale, onToggleMobileSidebar }) => {
-  const { lowStockIngredients, setActiveTab, searchTerm, setSearchTerm } = useApp();
+  const { lowStockIngredients, setActiveTab, searchTerm, setSearchTerm, theme, toggleTheme } = useApp();
   const [showNotifications, setShowNotifications] = useState(false);
 
   return (
@@ -68,6 +70,22 @@ export const Navbar = ({ onOpenQuickSale, onToggleMobileSidebar }) => {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
+
+          {/* Light / Dark Mode Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="p-2.5 rounded-xl text-[#002a59] hover:bg-[#fadbc7]/60 dark:text-[#fadbc7] dark:hover:bg-[#003b7a] transition-all flex items-center gap-1.5 text-xs font-semibold"
+            title={theme === 'dark' ? 'Mudar para Light Mode ☀️' : 'Mudar para Dark Mode 🌙'}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-[#fadbc7]" />
+            ) : (
+              <Moon className="w-4 h-4 text-[#002a59]" />
+            )}
+            <span className="hidden xl:inline text-[11px]">
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </span>
+          </button>
 
           {/* Instagram Link */}
           <a
