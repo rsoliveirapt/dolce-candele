@@ -70,23 +70,83 @@ export const DashboardView = () => {
       return sum + 1;
     }, 0);
 
-  // Recharts Data: Monthly History
-  const monthlyData = [
-    { name: 'Mai', fatura: 420, lucro: 210, despesas: 180 },
-    { name: 'Jun', fatura: 650, lucro: 340, despesas: 220 },
-    { name: 'Jul', fatura: 890, lucro: 480, despesas: 310 },
-    { name: 'Ago', fatura: 1120, lucro: 610, despesas: 390 },
-    { name: 'Set (Atual)', fatura: Math.round(grossRevenue), lucro: Math.round(Math.max(0, realNetProfit)), despesas: Math.round(totalVariableExpenses + totalFixedCostsMonthly) }
-  ];
+  // Dynamic Monthly History (Last 5 Months)
+  const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  const now = new Date();
+  const months = [];
+  for (let i = 4; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push({
+      year: d.getFullYear(),
+      month: d.getMonth(),
+      name: `${monthNames[d.getMonth()]}${i === 0 ? ' (Atual)' : ''}`
+    });
+  }
 
-  // Expenses Category Pie Chart Data
-  const expensesByCategory = [
-    { name: 'Matérias-Primas', value: 135.00, color: '#002a59' },
-    { name: 'Equipamentos', value: 42.90, color: '#d97706' },
-    { name: 'Marketing & Ads', value: 80.00, color: '#8b5cf6' },
-    { name: 'Embalagens', value: 105.00, color: '#06b6d4' },
-    { name: 'Custos Fixos', value: totalFixedCostsMonthly, color: '#f7caac' }
-  ];
+  const monthlyData = months.map(m => {
+    const monthSales = sales.filter(s => {
+      if (s.status === 'cancelado') return false;
+      const sDate = new Date(s.saleDate);
+      return sDate.getFullYear() === m.year && sDate.getMonth() === m.month;
+    });
+    const fatura = monthSales.reduce((sum, s) => sum + (s.grossAmount || 0), 0);
+    const fees = monthSales.reduce((sum, s) => sum + (s.platformFee || 0), 0);
+
+    const monthExpenses = expenses.filter(e => {
+      const eDate = new Date(e.expenseDate);
+      return eDate.getFullYear() === m.year && eDate.getMonth() === m.month;
+    });
+    const variableExp = monthExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+    const despesas = variableExp + (totalFixedCostsMonthly > 0 ? totalFixedCostsMonthly : 0);
+    const lucro = Math.max(0, fatura - fees - despesas);
+
+    return {
+      name: m.name,
+      fatura: parseFloat(fatura.toFixed(2)),
+      lucro: parseFloat(lucro.toFixed(2)),
+      despesas: parseFloat(despesas.toFixed(2))
+    };
+  });
+
+  // Dynamic Expenses Category Pie Chart Data
+  const expCategoriesMap = {
+    matérias_primas: 'Matérias-Primas',
+    equipamento: 'Equipamentos',
+    marketing: 'Marketing & Ads',
+    embalagens: 'Embalagens',
+    operacional: 'Despesas Gerais'
+  };
+
+  const categoryColors = {
+    'Matérias-Primas': '#002a59',
+    'Equipamentos': '#d97706',
+    'Marketing & Ads': '#8b5cf6',
+    'Embalagens': '#06b6d4',
+    'Despesas Gerais': '#ec4899',
+    'Custos Fixos Mensais': '#f7caac'
+  };
+
+  const categoryTotals = {};
+  expenses.forEach(e => {
+    const catName = expCategoriesMap[e.category] || e.category || 'Outros';
+    categoryTotals[catName] = (categoryTotals[catName] || 0) + (e.amount || 0);
+  });
+
+  if (totalFixedCostsMonthly > 0) {
+    categoryTotals['Custos Fixos Mensais'] = totalFixedCostsMonthly;
+  }
+
+  let expensesByCategory = Object.keys(categoryTotals).map(catName => ({
+    name: catName,
+    value: parseFloat(categoryTotals[catName].toFixed(2)),
+    color: categoryColors[catName] || '#64748b'
+  })).filter(c => c.value > 0);
+
+  if (expensesByCategory.length === 0) {
+    expensesByCategory = [
+      { name: 'Sem Despesas', value: 0.001, color: '#cbd5e1' }
+    ];
+  }
 
   // Top Products by Revenue
   const topProducts = products.map(prod => {
@@ -345,34 +405,45 @@ export const DashboardView = () => {
           </div>
 
           <div className="space-y-3">
-            {topProducts.map((prod) => (
-              <div
-                key={prod.id}
-                className="p-4 rounded-2xl bg-[#fadbc7]/30 dark:bg-[#001f42]/40 border border-[#fadbc7] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-              >
-                <div>
-                  <h4 className="font-extrabold text-sm text-[#002a59] dark:text-[#fadbc7]">
-                    {prod.name}
-                  </h4>
-                  <p className="text-xs text-stone-500 mt-0.5 font-medium">
-                    {prod.category} • Temp: {prod.laborTimeMinutes} min labor
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <span className="text-xs text-stone-400 block">Custo vs Venda</span>
-                    <span className="text-xs font-semibold text-stone-700 dark:text-stone-300">
-                      {prod.costs.totalCost.toFixed(2)}€ → <span className="font-extrabold text-[#002a59] dark:text-[#fadbc7]">{prod.suggestedPrice.toFixed(2)}€</span>
-                    </span>
-                  </div>
-
-                  <div className="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-extrabold text-xs border border-emerald-500/20">
-                    +{prod.margin.toFixed(0)}% Margem
-                  </div>
-                </div>
+            {topProducts.length === 0 ? (
+              <div className="p-6 text-center rounded-2xl bg-[#fadbc7]/20 border border-[#fadbc7]">
+                <p className="text-xs text-[#002a59] dark:text-[#fadbc7] font-semibold">
+                  Sem velas no catálogo.
+                </p>
+                <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+                  Registe velas no Catálogo para visualizar a rentabilidade e margens por modelo.
+                </p>
               </div>
-            ))}
+            ) : (
+              topProducts.map((prod) => (
+                <div
+                  key={prod.id}
+                  className="p-4 rounded-2xl bg-[#fadbc7]/30 dark:bg-[#001f42]/40 border border-[#fadbc7] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                >
+                  <div>
+                    <h4 className="font-extrabold text-sm text-[#002a59] dark:text-[#fadbc7]">
+                      {prod.name}
+                    </h4>
+                    <p className="text-xs text-stone-500 mt-0.5 font-medium">
+                      {prod.category} • Temp: {prod.laborTimeMinutes} min labor
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <span className="text-xs text-stone-400 block">Custo vs Venda</span>
+                      <span className="text-xs font-semibold text-stone-700 dark:text-stone-300">
+                        {prod.costs.totalCost.toFixed(2)}€ → <span className="font-extrabold text-[#002a59] dark:text-[#fadbc7]">{prod.suggestedPrice.toFixed(2)}€</span>
+                      </span>
+                    </div>
+
+                    <div className="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-extrabold text-xs border border-emerald-500/20">
+                      +{prod.margin.toFixed(0)}% Margem
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
