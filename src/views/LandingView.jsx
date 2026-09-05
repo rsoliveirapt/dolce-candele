@@ -66,10 +66,10 @@ export const LandingView = ({ onOpenLogin }) => {
   return (
     <div className="bg-[#f8ece1] dark:bg-[#001229] min-h-screen text-[#002658] dark:text-[#fadbc7] transition-colors w-full overflow-x-hidden font-sans">
       
-      {/* 1. HERO SECTION (FULLSCREEN BACKGROUND BANNER) */}
+      {/* 1. HERO SECTION (FULLSCREEN BACKGROUND BANNER WITH OVERLAPPING BOTTOM WAVE) */}
       <section
         id="hero"
-        className="relative w-full h-[85vh] min-h-[640px] max-h-[900px] bg-cover bg-center flex items-center overflow-hidden"
+        className="relative w-full h-[88vh] min-h-[660px] max-h-[920px] bg-cover bg-center flex items-center overflow-hidden"
         style={{ backgroundImage: "url('/hero-main-banner.jpg')" }}
       >
         {/* Soft Left Gradient Overlay for crisp text legibility */}
@@ -82,7 +82,7 @@ export const LandingView = ({ onOpenLogin }) => {
         </div>
 
         {/* Hero Text Content */}
-        <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 sm:px-12 md:px-20 lg:px-28">
+        <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 sm:px-12 md:px-20 lg:px-28 pb-16">
           <div className="max-w-2xl space-y-6">
             
             <span className="text-xs font-bold tracking-[0.3em] text-[#002658]/80 dark:text-[#fadbc7]/80 uppercase block">
@@ -136,18 +136,18 @@ export const LandingView = ({ onOpenLogin }) => {
 
           </div>
         </div>
+
+        {/* OVERLAPPING WAVE DIVIDER 1 AT BOTTOM OF HERO */}
+        <div className="absolute bottom-0 inset-x-0 w-full overflow-hidden leading-none z-20 pointer-events-none text-[#f2decb] dark:text-[#001f42]">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-16 sm:h-24">
+            <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+          </svg>
+        </div>
       </section>
 
-      {/* SEAMLESS WAVE DIVIDER 1 */}
-      <div className="w-full overflow-hidden leading-none text-[#f2decb] dark:text-[#001f42]">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-14 sm:h-20">
-          <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
-        </svg>
-      </div>
-
       {/* 2. SECTION: AS NOSSAS COLEÇÕES / SABORES QUE INSPIRAM */}
-      <section id="colecoes" className="bg-[#f2decb] dark:bg-[#001f42] py-16 px-6 sm:px-12 md:px-20 lg:px-28 w-full transition-colors">
-        <div className="max-w-[1700px] mx-auto space-y-12">
+      <section id="colecoes" className="relative bg-[#f2decb] dark:bg-[#001f42] py-20 px-6 sm:px-12 md:px-20 lg:px-28 w-full transition-colors">
+        <div className="max-w-[1700px] mx-auto space-y-12 pb-12">
           
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
@@ -198,17 +198,17 @@ export const LandingView = ({ onOpenLogin }) => {
           </div>
 
         </div>
+
+        {/* OVERLAPPING WAVE DIVIDER 2 AT BOTTOM OF SECTION 2 */}
+        <div className="absolute bottom-0 inset-x-0 w-full overflow-hidden leading-none z-20 pointer-events-none text-[#f8ece1] dark:text-[#001229] rotate-180">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-16 sm:h-24">
+            <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+          </svg>
+        </div>
       </section>
 
-      {/* SEAMLESS WAVE DIVIDER 2 */}
-      <div className="w-full overflow-hidden leading-none text-[#f2decb] dark:text-[#001f42] rotate-180">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-14 sm:h-20">
-          <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,40 L1200,120 L0,120 Z" fill="#f8ece1"></path>
-        </svg>
-      </div>
-
       {/* 3. SECTION: MAIS DO QUE VELAS / PEQUENOS DETALHES, GRANDES MOMENTOS */}
-      <section id="sobre" className="py-16 px-6 sm:px-12 md:px-20 lg:px-28 w-full max-w-[1700px] mx-auto bg-[#f8ece1] dark:bg-[#001229]">
+      <section id="sobre" className="py-20 px-6 sm:px-12 md:px-20 lg:px-28 w-full max-w-[1700px] mx-auto bg-[#f8ece1] dark:bg-[#001229]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Text Content */}
