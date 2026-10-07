@@ -91,9 +91,8 @@ DROP TRIGGER IF EXISTS `set_order_number`;
 CREATE TRIGGER `set_order_number`
 BEFORE INSERT ON `sales`
 FOR EACH ROW
-BEGIN
-    SET NEW.order_number = (SELECT IFNULL(MAX(order_number), 1000) + 1 FROM sales);
-END;
+SET NEW.order_number = (SELECT IFNULL(MAX(order_number), 1000) + 1 FROM `sales`);
+
 
 -- ─── 7. ITENS DA VENDA ───────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `sale_items` (
