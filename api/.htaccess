@@ -1,10 +1,6 @@
 # Dolce Candele — API Directory Rules
 # Allows PHP execution and sets CORS headers via Apache
 
-# Allow PHP files to execute
-Options +ExecCGI
-AddHandler application/x-httpd-php .php
-
 # Disable directory listing
 Options -Indexes
 
