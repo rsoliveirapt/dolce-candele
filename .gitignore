@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Database credentials — NEVER commit this file
+api/config.php
+

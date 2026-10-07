@@ -17,7 +17,7 @@ import { SettingsView } from './views/SettingsView';
 import { Globe, LogOut, ShieldCheck } from 'lucide-react';
 
 const MainLayout = () => {
-  const { activeTab } = useApp();
+  const { activeTab, loading, dbError, loadAll } = useApp();
   const { isAuthenticated, currentUser, logout, isLoginModalOpen, setIsLoginModalOpen } = useAuth();
 
   const [isQuickSaleOpen, setIsQuickSaleOpen] = useState(false);
@@ -114,7 +114,30 @@ const MainLayout = () => {
 
         {/* Main Content Area */}
         <main className="flex-1 min-w-0">
-          {renderActiveView()}
+          {/* DB Loading Spinner */}
+          {loading && (
+            <div className="flex flex-col items-center justify-center h-64 gap-4">
+              <div className="w-10 h-10 border-4 border-[#fadbc7] border-t-[#002a59] rounded-full animate-spin" />
+              <p className="text-sm font-semibold text-stone-500 dark:text-stone-400">A carregar dados da base de dados…</p>
+            </div>
+          )}
+
+          {/* DB Connection Error */}
+          {!loading && dbError && (
+            <div className="p-6 rounded-3xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 text-center space-y-3">
+              <p className="text-sm font-bold text-rose-700 dark:text-rose-300">⚠️ Erro de ligação à base de dados</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-mono">{dbError}</p>
+              <button
+                onClick={loadAll}
+                className="px-4 py-2 text-xs font-bold rounded-xl bg-rose-600 text-white hover:bg-rose-700"
+              >
+                Tentar novamente
+              </button>
+            </div>
+          )}
+
+          {/* Normal view */}
+          {!loading && !dbError && renderActiveView()}
         </main>
       </div>
 

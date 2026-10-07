@@ -1,342 +1,211 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import {
-  initialSuppliers,
-  initialIngredients,
-  initialProducts,
-  initialFixedCosts,
-  initialSales,
-  initialExpenses
-} from '../data/initialData';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { api } from '../lib/api';
 
 const AppContext = createContext();
 
 export const useApp = () => {
   const context = useContext(AppContext);
-  if (!context) {
-    throw new Error('useApp must be used within an AppProvider');
-  }
+  if (!context) throw new Error('useApp must be used within an AppProvider');
   return context;
 };
 
 export const AppProvider = ({ children }) => {
-  // One-time legacy demo data clearing migration
-  useEffect(() => {
-    const isCleared = localStorage.getItem('dc_demo_cleared_v2');
-    if (!isCleared) {
-      localStorage.removeItem('dc_suppliers');
-      localStorage.removeItem('dc_ingredients');
-      localStorage.removeItem('dc_products');
-      localStorage.removeItem('dc_fixed_costs');
-      localStorage.removeItem('dc_sales');
-      localStorage.removeItem('dc_expenses');
-      localStorage.setItem('dc_demo_cleared_v2', 'true');
-    }
-  }, []);
+  // ── Data state ────────────────────────────────────────────────
+  const [suppliers,   setSuppliers]   = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [products,    setProducts]    = useState([]);
+  const [fixedCosts,  setFixedCosts]  = useState([]);
+  const [sales,       setSales]       = useState([]);
+  const [expenses,    setExpenses]    = useState([]);
 
-  // LocalStorage State Initialization
-  const [suppliers, setSuppliers] = useState(() => {
-    const saved = localStorage.getItem('dc_suppliers');
-    return saved ? JSON.parse(saved) : initialSuppliers;
-  });
+  // ── UI state ──────────────────────────────────────────────────
+  const [activeTab,   setActiveTab]   = useState('dashboard');
+  const [searchTerm,  setSearchTerm]  = useState('');
+  const [loading,     setLoading]     = useState(true);   // initial data fetch
+  const [dbError,     setDbError]     = useState(null);   // connection/query error
 
-  const [ingredients, setIngredients] = useState(() => {
-    const saved = localStorage.getItem('dc_ingredients');
-    return saved ? JSON.parse(saved) : initialIngredients;
-  });
-
-  const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('dc_products');
-    return saved ? JSON.parse(saved) : initialProducts;
-  });
-
-  const [fixedCosts, setFixedCosts] = useState(() => {
-    const saved = localStorage.getItem('dc_fixed_costs');
-    return saved ? JSON.parse(saved) : initialFixedCosts;
-  });
-
-  const [sales, setSales] = useState(() => {
-    const saved = localStorage.getItem('dc_sales');
-    return saved ? JSON.parse(saved) : initialSales;
-  });
-
-  const [expenses, setExpenses] = useState(() => {
-    const saved = localStorage.getItem('dc_expenses');
-    return saved ? JSON.parse(saved) : initialExpenses;
-  });
-
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // Theme State (light | dark)
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('dc_theme');
-    return saved || 'light';
-  });
+  // ── Theme (localStorage is fine for a UI preference) ──────────
+  const [theme, setTheme] = useState(() => localStorage.getItem('dc_theme') || 'light');
 
   useEffect(() => {
     localStorage.setItem('dc_theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
-  };
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
-  // Persist State Changes
-  useEffect(() => {
-    localStorage.setItem('dc_suppliers', JSON.stringify(suppliers));
-  }, [suppliers]);
+  // ── Initial data load from MySQL ─────────────────────────────
+  const loadAll = useCallback(async () => {
+    setLoading(true);
+    setDbError(null);
+    try {
+      const [sup, ing, prod, fc, sal, exp] = await Promise.all([
+        api.suppliers.list(),
+        api.ingredients.list(),
+        api.products.list(),
+        api.fixedCosts.list(),
+        api.sales.list(),
+        api.expenses.list(),
+      ]);
+      setSuppliers(sup);
+      setIngredients(ing);
+      setProducts(prod);
+      setFixedCosts(fc);
+      setSales(sal);
+      setExpenses(exp);
+    } catch (err) {
+      console.error('[AppContext] loadAll error:', err);
+      setDbError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('dc_ingredients', JSON.stringify(ingredients));
-  }, [ingredients]);
+  useEffect(() => { loadAll(); }, [loadAll]);
 
-  useEffect(() => {
-    localStorage.setItem('dc_products', JSON.stringify(products));
-  }, [products]);
-
-  useEffect(() => {
-    localStorage.setItem('dc_fixed_costs', JSON.stringify(fixedCosts));
-  }, [fixedCosts]);
-
-  useEffect(() => {
-    localStorage.setItem('dc_sales', JSON.stringify(sales));
-  }, [sales]);
-
-  useEffect(() => {
-    localStorage.setItem('dc_expenses', JSON.stringify(expenses));
-  }, [expenses]);
-
-  // ==========================================
-  // HELPER CALCULATORS
-  // ==========================================
-
-  // Calculate Unit Cost for an Ingredient (€ / g, € / ml, € / unit)
+  // ── Calculators (pure, no side-effects) ──────────────────────
   const calculateIngredientUnitCost = (purchaseCost, purchaseQuantity) => {
     if (!purchaseQuantity || purchaseQuantity <= 0) return 0;
     return parseFloat((purchaseCost / purchaseQuantity).toFixed(4));
   };
 
-  // Calculate Raw Material Cost for a Product Recipe
   const calculateRecipeRawMaterialCost = (recipeList) => {
     if (!recipeList || !Array.isArray(recipeList)) return 0;
     return recipeList.reduce((sum, item) => {
       const ing = ingredients.find(i => i.id === item.ingredientId);
-      if (!ing) return sum;
-      return sum + (ing.unitCost * (item.quantity || 0));
+      return sum + (ing ? ing.unitCost * (item.quantity || 0) : 0);
     }, 0);
   };
 
-  // Calculate Complete Cost Breakdown for a Product
   const calculateProductCosts = (product) => {
     const rawMaterialCost = calculateRecipeRawMaterialCost(product.recipe);
-    const laborCost = ((product.laborTimeMinutes || 0) / 60) * (product.laborHourlyRate || 0);
-    const overheadCost = rawMaterialCost * ((product.overheadPercentage || 0) / 100);
-    const totalCost = rawMaterialCost + laborCost + overheadCost;
-
-    const targetMargin = product.targetMarginPercentage || 60;
-    const marginFactor = Math.max(0.05, 1 - (targetMargin / 100));
-    const suggestedPrice = totalCost > 0 ? totalCost / marginFactor : 0;
-    const minPrice = totalCost;
-
-    return {
-      rawMaterialCost,
-      laborCost,
-      overheadCost,
-      totalCost,
-      minPrice,
-      suggestedPrice
-    };
+    const laborCost       = ((product.laborTimeMinutes || 0) / 60) * (product.laborHourlyRate || 0);
+    const overheadCost    = rawMaterialCost * ((product.overheadPercentage || 0) / 100);
+    const totalCost       = rawMaterialCost + laborCost + overheadCost;
+    const targetMargin    = product.targetMarginPercentage || 60;
+    const marginFactor    = Math.max(0.05, 1 - targetMargin / 100);
+    const suggestedPrice  = totalCost > 0 ? totalCost / marginFactor : 0;
+    return { rawMaterialCost, laborCost, overheadCost, totalCost, minPrice: totalCost, suggestedPrice };
   };
 
-  // Check Low Stock Ingredients
   const lowStockIngredients = ingredients.filter(ing => ing.currentStock <= ing.minStock);
 
-  // ==========================================
-  // INVENTORY / INGREDIENT ACTIONS
-  // ==========================================
-  const addIngredient = (newIng) => {
-    const unitCost = calculateIngredientUnitCost(newIng.purchaseCost, newIng.purchaseQuantity);
-    const item = {
-      ...newIng,
-      id: `ing-${Date.now()}`,
-      unitCost,
-      currentStock: parseFloat(newIng.currentStock || newIng.purchaseQuantity || 0),
-      minStock: parseFloat(newIng.minStock || 0)
-    };
-    setIngredients(prev => [...prev, item]);
+  // ── Suppliers ─────────────────────────────────────────────────
+  const addSupplier = async (data) => {
+    const created = await api.suppliers.create(data);
+    setSuppliers(prev => [...prev, created]);
   };
-
-  const updateIngredient = (id, updatedIng) => {
-    const unitCost = calculateIngredientUnitCost(updatedIng.purchaseCost, updatedIng.purchaseQuantity);
-    setIngredients(prev => prev.map(ing => ing.id === id ? { ...updatedIng, id, unitCost } : ing));
+  const updateSupplier = async (id, data) => {
+    await api.suppliers.update(id, data);
+    setSuppliers(prev => prev.map(s => s.id === id ? { ...data, id } : s));
   };
-
-  const deleteIngredient = (id) => {
-    setIngredients(prev => prev.filter(ing => ing.id !== id));
-  };
-
-  const restockIngredient = (id, additionalQty) => {
-    setIngredients(prev => prev.map(ing => {
-      if (ing.id === id) {
-        return { ...ing, currentStock: ing.currentStock + parseFloat(additionalQty) };
-      }
-      return ing;
-    }));
-  };
-
-  // ==========================================
-  // SUPPLIER ACTIONS
-  // ==========================================
-  const addSupplier = (newSup) => {
-    const item = { ...newSup, id: `sup-${Date.now()}` };
-    setSuppliers(prev => [...prev, item]);
-  };
-
-  const updateSupplier = (id, updatedSup) => {
-    setSuppliers(prev => prev.map(s => s.id === id ? { ...updatedSup, id } : s));
-  };
-
-  const deleteSupplier = (id) => {
+  const deleteSupplier = async (id) => {
+    await api.suppliers.delete(id);
     setSuppliers(prev => prev.filter(s => s.id !== id));
   };
 
-  // ==========================================
-  // PRODUCT ACTIONS
-  // ==========================================
-  const addProduct = (newProd) => {
-    const item = { ...newProd, id: `prod-${Date.now()}` };
-    setProducts(prev => [...prev, item]);
+  // ── Ingredients ───────────────────────────────────────────────
+  const addIngredient = async (data) => {
+    const created = await api.ingredients.create(data);
+    setIngredients(prev => [...prev, created]);
+  };
+  const updateIngredient = async (id, data) => {
+    await api.ingredients.update(id, data);
+    // Re-fetch to get server-computed unitCost
+    const fresh = await api.ingredients.list();
+    setIngredients(fresh);
+  };
+  const deleteIngredient = async (id) => {
+    await api.ingredients.delete(id);
+    setIngredients(prev => prev.filter(i => i.id !== id));
+  };
+  const restockIngredient = async (id, additionalQty) => {
+    const updated = await api.ingredients.restock(id, additionalQty);
+    setIngredients(prev => prev.map(i => i.id === id ? updated : i));
   };
 
-  const updateProduct = (id, updatedProd) => {
-    setProducts(prev => prev.map(p => p.id === id ? { ...updatedProd, id } : p));
+  // ── Products ──────────────────────────────────────────────────
+  const addProduct = async (data) => {
+    const created = await api.products.create(data);
+    setProducts(prev => [...prev, created]);
   };
-
-  const deleteProduct = (id) => {
+  const updateProduct = async (id, data) => {
+    const updated = await api.products.update(id, data);
+    setProducts(prev => prev.map(p => p.id === id ? updated : p));
+  };
+  const deleteProduct = async (id) => {
+    await api.products.delete(id);
     setProducts(prev => prev.filter(p => p.id !== id));
   };
 
-  // ==========================================
-  // SALES ACTIONS (WITH AUTOMATIC INVENTORY DEDUCTION)
-  // ==========================================
-  const addSale = (newSale) => {
-    const saleId = `sale-${Date.now()}`;
-    const nextOrderNumber = sales.length > 0 ? Math.max(...sales.map(s => s.orderNumber || 1000)) + 1 : 1001;
-
-    const saleRecord = {
-      ...newSale,
-      id: saleId,
-      orderNumber: nextOrderNumber,
-      saleDate: newSale.saleDate || new Date().toISOString()
-    };
-
-    let updatedIngredients = [...ingredients];
-    if (saleRecord.items && Array.isArray(saleRecord.items)) {
-      saleRecord.items.forEach(saleItem => {
-        const prod = products.find(p => p.id === saleItem.productId);
-        if (prod && prod.recipe) {
-          prod.recipe.forEach(recipeIng => {
-            const ingIndex = updatedIngredients.findIndex(i => i.id === recipeIng.ingredientId);
-            if (ingIndex !== -1) {
-              const qtyDeducted = (recipeIng.quantity || 0) * (saleItem.quantity || 1);
-              const newStock = Math.max(0, updatedIngredients[ingIndex].currentStock - qtyDeducted);
-              updatedIngredients[ingIndex] = {
-                ...updatedIngredients[ingIndex],
-                currentStock: newStock
-              };
-            }
-          });
-        }
-      });
-    }
-
-    setIngredients(updatedIngredients);
-    setSales(prev => [saleRecord, ...prev]);
+  // ── Fixed Costs ───────────────────────────────────────────────
+  const addFixedCost = async (data) => {
+    const created = await api.fixedCosts.create(data);
+    setFixedCosts(prev => [...prev, created]);
   };
-
-  const updateSaleStatus = (id, status) => {
-    setSales(prev => prev.map(s => s.id === id ? { ...s, status } : s));
+  const updateFixedCost = async (id, data) => {
+    await api.fixedCosts.update(id, data);
+    setFixedCosts(prev => prev.map(f => f.id === id ? { ...data, id } : f));
   };
-
-  const deleteSale = (id) => {
-    setSales(prev => prev.filter(s => s.id !== id));
-  };
-
-  // ==========================================
-  // EXPENSES & FIXED COSTS
-  // ==========================================
-  const addExpense = (newExp) => {
-    const item = { ...newExp, id: `exp-${Date.now()}` };
-    setExpenses(prev => [item, ...prev]);
-  };
-
-  const deleteExpense = (id) => {
-    setExpenses(prev => prev.filter(e => e.id !== id));
-  };
-
-  const addFixedCost = (newFC) => {
-    const item = { ...newFC, id: `fc-${Date.now()}` };
-    setFixedCosts(prev => [...prev, item]);
-  };
-
-  const updateFixedCost = (id, updatedFC) => {
-    setFixedCosts(prev => prev.map(f => f.id === id ? { ...updatedFC, id } : f));
-  };
-
-  const deleteFixedCost = (id) => {
+  const deleteFixedCost = async (id) => {
+    await api.fixedCosts.delete(id);
     setFixedCosts(prev => prev.filter(f => f.id !== id));
   };
 
-  // ==========================================
-  // DATA MANAGEMENT & RESET
-  // ==========================================
-  const resetToDemoData = () => {
-    setSuppliers([]);
-    setIngredients([]);
-    setProducts([]);
-    setFixedCosts([]);
-    setSales([]);
-    setExpenses([]);
-    localStorage.removeItem('dc_suppliers');
-    localStorage.removeItem('dc_ingredients');
-    localStorage.removeItem('dc_products');
-    localStorage.removeItem('dc_fixed_costs');
-    localStorage.removeItem('dc_sales');
-    localStorage.removeItem('dc_expenses');
+  // ── Sales ─────────────────────────────────────────────────────
+  const addSale = async (data) => {
+    const created = await api.sales.create(data);
+    setSales(prev => [created, ...prev]);
+    // Refresh ingredients stock (deducted server-side)
+    const freshIng = await api.ingredients.list();
+    setIngredients(freshIng);
+  };
+  const updateSaleStatus = async (id, status) => {
+    await api.sales.updateStatus(id, status);
+    setSales(prev => prev.map(s => s.id === id ? { ...s, status } : s));
+  };
+  const deleteSale = async (id) => {
+    await api.sales.delete(id);
+    setSales(prev => prev.filter(s => s.id !== id));
+  };
+
+  // ── Expenses ──────────────────────────────────────────────────
+  const addExpense = async (data) => {
+    const created = await api.expenses.create(data);
+    setExpenses(prev => [created, ...prev]);
+  };
+  const deleteExpense = async (id) => {
+    await api.expenses.delete(id);
+    setExpenses(prev => prev.filter(e => e.id !== id));
+  };
+
+  // ── Data management utilities ─────────────────────────────────
+  const resetToDemoData = async () => {
+    // Just reload from DB (there is no local demo data anymore)
+    await loadAll();
   };
 
   const exportDataJSON = () => {
-    const data = {
-      suppliers,
-      ingredients,
-      products,
-      fixedCosts,
-      sales,
-      expenses,
-      exportDate: new Date().toISOString()
-    };
-    const jsonStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+    const blob = new Blob(
+      [JSON.stringify({ suppliers, ingredients, products, fixedCosts, sales, expenses, exportDate: new Date().toISOString() }, null, 2)],
+      { type: 'application/json' }
+    );
+    const url  = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.href = url;
+    link.href     = url;
     link.download = `dolce_candele_backup_${new Date().toISOString().split('T')[0]}.json`;
     link.click();
   };
 
+  // importDataJSON is kept for compatibility (imports into memory only)
   const importDataJSON = (jsonData) => {
     try {
-      if (jsonData.suppliers) setSuppliers(jsonData.suppliers);
+      if (jsonData.suppliers)   setSuppliers(jsonData.suppliers);
       if (jsonData.ingredients) setIngredients(jsonData.ingredients);
-      if (jsonData.products) setProducts(jsonData.products);
-      if (jsonData.fixedCosts) setFixedCosts(jsonData.fixedCosts);
-      if (jsonData.sales) setSales(jsonData.sales);
-      if (jsonData.expenses) setExpenses(jsonData.expenses);
+      if (jsonData.products)    setProducts(jsonData.products);
+      if (jsonData.fixedCosts)  setFixedCosts(jsonData.fixedCosts);
+      if (jsonData.sales)       setSales(jsonData.sales);
+      if (jsonData.expenses)    setExpenses(jsonData.expenses);
       return true;
     } catch (e) {
       console.error(e);
@@ -347,46 +216,31 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        suppliers,
-        ingredients,
-        products,
-        fixedCosts,
-        sales,
-        expenses,
-        activeTab,
-        setActiveTab,
-        searchTerm,
-        setSearchTerm,
-        theme,
-        setTheme,
-        toggleTheme,
+        // Data
+        suppliers, ingredients, products, fixedCosts, sales, expenses,
+        // UI
+        activeTab, setActiveTab, searchTerm, setSearchTerm,
+        theme, setTheme, toggleTheme,
+        // Status
+        loading, dbError, loadAll,
+        // Computed
         lowStockIngredients,
         // Calculators
-        calculateIngredientUnitCost,
-        calculateRecipeRawMaterialCost,
-        calculateProductCosts,
-        // Handlers
-        addIngredient,
-        updateIngredient,
-        deleteIngredient,
-        restockIngredient,
-        addSupplier,
-        updateSupplier,
-        deleteSupplier,
-        addProduct,
-        updateProduct,
-        deleteProduct,
-        addSale,
-        updateSaleStatus,
-        deleteSale,
-        addExpense,
-        deleteExpense,
-        addFixedCost,
-        updateFixedCost,
-        deleteFixedCost,
-        resetToDemoData,
-        exportDataJSON,
-        importDataJSON
+        calculateIngredientUnitCost, calculateRecipeRawMaterialCost, calculateProductCosts,
+        // Suppliers
+        addSupplier, updateSupplier, deleteSupplier,
+        // Ingredients
+        addIngredient, updateIngredient, deleteIngredient, restockIngredient,
+        // Products
+        addProduct, updateProduct, deleteProduct,
+        // Fixed Costs
+        addFixedCost, updateFixedCost, deleteFixedCost,
+        // Sales
+        addSale, updateSaleStatus, deleteSale,
+        // Expenses
+        addExpense, deleteExpense,
+        // Data management
+        resetToDemoData, exportDataJSON, importDataJSON,
       }}
     >
       {children}

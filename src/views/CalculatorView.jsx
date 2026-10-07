@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { jsPDF } from 'jspdf';
 import { useApp } from '../context/AppContext';
 import {
   Calculator,
@@ -122,9 +123,217 @@ export const CalculatorView = () => {
     setTimeout(() => setIsSavedNotice(false), 3000);
   };
 
-  // Print Technical Sheet Function
+  // Export Technical Sheet as PDF
   const handlePrintTechnicalSheet = () => {
-    window.print();
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const margin = 18;
+    const contentW = pageW - margin * 2;
+    let y = 0;
+
+    // ── Helpers ──────────────────────────────────────────────
+    const line = (x1, y1, x2, y2, color = [220, 200, 180]) => {
+      doc.setDrawColor(...color);
+      doc.line(x1, y1, x2, y2);
+    };
+    const rect = (x, y2, w, h, fill) => {
+      doc.setFillColor(...fill);
+      doc.roundedRect(x, y2, w, h, 3, 3, 'F');
+    };
+    const text = (str, x, y2, opts = {}) => {
+      doc.text(str, x, y2, opts);
+    };
+
+    // ── Header bar ───────────────────────────────────────────
+    rect(0, 0, pageW, 28, [0, 42, 89]);        // deep navy
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(250, 219, 199);           // peach
+    text('DOLCE CANDELE', margin, 12);
+    doc.setFontSize(8);
+    doc.setTextColor(200, 180, 160);
+    doc.setFont('helvetica', 'normal');
+    text('Ficha Técnica de Produção  ·  @dolcecandele.pt', margin, 19);
+    // Date top-right
+    const dateStr = new Date().toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
+    doc.setFontSize(7.5);
+    text(dateStr, pageW - margin, 12, { align: 'right' });
+    y = 36;
+
+    // ── Section 1 – Product identification ───────────────────
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 42, 89);
+    text('1. Identificação do Produto Artesanal', margin, y);
+    y += 2;
+    line(margin, y, pageW - margin, y, [0, 42, 89]);
+    y += 6;
+
+    const labelW = 38;
+    const drawField = (label, value) => {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(120, 100, 80);
+      text(label, margin, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(30, 30, 30);
+      text(value || '—', margin + labelW, y);
+      y += 7;
+    };
+
+    drawField('Nome da Vela:', candleName || 'Nova Vela Artesanal');
+    drawField('Categoria / Linha:', category);
+    if (description) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(120, 100, 80);
+      text('Descrição:', margin, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(30, 30, 30);
+      const descLines = doc.splitTextToSize(description, contentW - labelW);
+      doc.text(descLines, margin + labelW, y);
+      y += descLines.length * 5 + 3;
+    }
+    y += 3;
+
+    // ── Section 2 – Recipe & raw materials ───────────────────
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 42, 89);
+    text('2. Receita & Matérias-Primas (Ficha Técnica)', margin, y);
+    y += 2;
+    line(margin, y, pageW - margin, y, [0, 42, 89]);
+    y += 7;
+
+    // Table header
+    const cols = { name: margin, qty: margin + 78, unit: margin + 100, unitCost: margin + 118, total: margin + 148 };
+    rect(margin, y - 4, contentW, 7, [0, 42, 89]);
+    doc.setFontSize(7.5);
+    doc.setTextColor(250, 219, 199);
+    doc.setFont('helvetica', 'bold');
+    text('Insumo / Matéria-Prima', cols.name + 1, y);
+    text('Qtd', cols.qty, y, { align: 'right' });
+    text('Un.', cols.unit, y);
+    text('€ / Un.', cols.unitCost, y, { align: 'right' });
+    text('Total €', cols.total + 12, y, { align: 'right' });
+    y += 6;
+
+    // Table rows
+    recipe.forEach((item, idx) => {
+      const ing = ingredients.find(i => i.id === item.ingredientId);
+      if (!ing) return;
+      const itemCost = (ing.unitCost || 0) * (parseFloat(item.quantity) || 0);
+      const rowBg = idx % 2 === 0 ? [255, 252, 248] : [248, 244, 238];
+      rect(margin, y - 4, contentW, 7, rowBg);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(30, 30, 30);
+      const ingName = doc.splitTextToSize(ing.name, 74)[0];
+      text(ingName, cols.name + 1, y);
+      text(String(item.quantity), cols.qty, y, { align: 'right' });
+      text(item.unit || '', cols.unit, y);
+      text(ing.unitCost?.toFixed(4) + ' €', cols.unitCost, y, { align: 'right' });
+      doc.setFont('helvetica', 'bold');
+      text(itemCost.toFixed(2) + ' €', cols.total + 12, y, { align: 'right' });
+      y += 7;
+    });
+
+    // Subtotal row
+    rect(margin, y - 4, contentW, 7, [250, 219, 199]);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(0, 42, 89);
+    text('Subtotal Matérias-Primas:', cols.name + 1, y);
+    text(rawMaterialCost.toFixed(2) + ' €', cols.total + 12, y, { align: 'right' });
+    y += 10;
+
+    // ── Section 3 – Labour & overhead ────────────────────────
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 42, 89);
+    text('3. Mão de Obra & Custos Indiretos', margin, y);
+    y += 2;
+    line(margin, y, pageW - margin, y, [0, 42, 89]);
+    y += 7;
+
+    const drawCostRow = (label, value, bold = false) => {
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(bold ? 0 : 60, bold ? 42 : 60, bold ? 89 : 60);
+      text(label, margin + 1, y);
+      doc.setFont('helvetica', 'bold');
+      text(value, pageW - margin, y, { align: 'right' });
+      y += 6;
+    };
+
+    drawCostRow(`Mão de Obra (${laborTimeMinutes} min @ ${parseFloat(laborHourlyRate).toFixed(2)} €/h):`, laborCost.toFixed(2) + ' €');
+    drawCostRow(`Custos Indiretos / Overhead (${overheadPercentage}% sobre insumos):`, overheadCost.toFixed(2) + ' €');
+    y += 2;
+    line(margin, y, pageW - margin, y);
+    y += 5;
+    drawCostRow('CUSTO TOTAL DE PRODUÇÃO:', totalProductionCost.toFixed(2) + ' €', true);
+    y += 5;
+
+    // ── Section 4 – Pricing summary ──────────────────────────
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 42, 89);
+    text('4. Resumo de Preços', margin, y);
+    y += 2;
+    line(margin, y, pageW - margin, y, [0, 42, 89]);
+    y += 7;
+
+    // Break-even card
+    rect(margin, y - 5, contentW, 14, [240, 240, 235]);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(100, 90, 80);
+    text('PREÇO MÍNIMO (BREAK-EVEN) — Sem prejuízo nem lucro', margin + 2, y);
+    doc.setFontSize(12);
+    doc.setTextColor(30, 30, 30);
+    text(totalProductionCost.toFixed(2) + ' €', pageW - margin - 2, y + 5, { align: 'right' });
+    y += 18;
+
+    // Recommended sale price card
+    rect(margin, y - 5, contentW, 20, [5, 130, 100]);   // emerald green
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(200, 240, 220);
+    text(`PREÇO DE VENDA RECOMENDADO  (Margem ${parseFloat(targetMarginPercentage).toFixed(0)}%)`, margin + 2, y);
+    doc.setFontSize(18);
+    doc.setTextColor(255, 255, 255);
+    text(suggestedSalePrice.toFixed(2) + ' €', margin + 2, y + 11);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(180, 240, 200);
+    text('Lucro Líquido por Vela:', pageW - margin - 2, y + 4, { align: 'right' });
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(250, 219, 199);
+    text('+' + netProfitPerCandle.toFixed(2) + ' €', pageW - margin - 2, y + 12, { align: 'right' });
+    y += 26;
+
+    // Actual margin note
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(80, 80, 80);
+    text(
+      `Com este preço (${suggestedSalePrice.toFixed(2)} €) obtém uma margem de lucro real de ${actualProfitMargin.toFixed(0)}% sobre cada vela vendida.`,
+      margin, y
+    );
+    y += 10;
+
+    // ── Footer ───────────────────────────────────────────────
+    const pageH = doc.internal.pageSize.getHeight();
+    line(margin, pageH - 14, pageW - margin, pageH - 14);
+    doc.setFontSize(7);
+    doc.setTextColor(160, 140, 120);
+    doc.setFont('helvetica', 'normal');
+    text('Dolce Candele  ·  Gestão Operacional & Financeira  ·  dolcecandele.pt', pageW / 2, pageH - 9, { align: 'center' });
+
+    // ── Save ─────────────────────────────────────────────────
+    const filename = `FichaTecnica_${(candleName || 'VelaArtesanal').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`;
+    doc.save(filename);
   };
 
   return (

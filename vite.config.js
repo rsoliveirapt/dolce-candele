@@ -8,5 +8,16 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      // In development: forward /api/* to a local PHP server.
+      // Run: php -S localhost:8000 -t . inside the project root
+      // (or use XAMPP and point the root to this folder)
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+    },
+  },
 })
 
