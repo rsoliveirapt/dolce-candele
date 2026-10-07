@@ -16,14 +16,33 @@ async function request(endpoint, method = 'GET', body = null) {
   };
   if (body !== null) opts.body = JSON.stringify(body);
 
-  const res = await fetch(`${BASE}${endpoint}`, opts);
-  const json = await res.json();
+  let res;
+  try {
+    res = await fetch(`${BASE}${endpoint}`, opts);
+  } catch (networkErr) {
+    // Network failure (offline, DNS, CORS preflight blocked, etc.)
+    throw new Error(`Sem ligação à API (${endpoint}): ${networkErr.message}`);
+  }
+
+  // Try to parse JSON; if the server returned HTML (PHP error page) catch it
+  let json;
+  try {
+    json = await res.json();
+  } catch {
+    const text = await res.text().catch(() => '(sem resposta)');
+    throw new Error(
+      `O servidor devolveu uma resposta inválida [HTTP ${res.status}].\n` +
+      `Verifica se o PHP está ativo e o ficheiro ${endpoint} existe.\n` +
+      `Primeiros 200 chars: ${text.slice(0, 200)}`
+    );
+  }
 
   if (!json.ok) {
     throw new Error(json.error ?? `API error ${res.status}`);
   }
   return json.data;
 }
+
 
 // ── Suppliers ────────────────────────────────────────────────────
 export const api = {

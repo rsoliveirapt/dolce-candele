@@ -126,7 +126,15 @@ const MainLayout = () => {
           {!loading && dbError && (
             <div className="p-6 rounded-3xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 text-center space-y-3">
               <p className="text-sm font-bold text-rose-700 dark:text-rose-300">⚠️ Erro de ligação à base de dados</p>
-              <p className="text-xs text-rose-600 dark:text-rose-400 font-mono">{dbError}</p>
+              <pre className="text-xs text-rose-600 dark:text-rose-400 font-mono text-left bg-rose-100 dark:bg-rose-950/60 p-3 rounded-xl overflow-auto max-h-48 whitespace-pre-wrap break-words">
+                {String(dbError)}
+              </pre>
+              <div className="text-xs text-stone-500 dark:text-stone-400 space-y-1">
+                <p>💡 <strong>Verifica:</strong></p>
+                <p>1. A pasta <code>api/</code> está em <code>public_html/api/</code></p>
+                <p>2. O ficheiro <code>api/config.php</code> tem as credenciais corretas</p>
+                <p>3. O PHP está ativo no cPanel (versão 8.0+)</p>
+              </div>
               <button
                 onClick={loadAll}
                 className="px-4 py-2 text-xs font-bold rounded-xl bg-rose-600 text-white hover:bg-rose-700"
@@ -135,6 +143,7 @@ const MainLayout = () => {
               </button>
             </div>
           )}
+
 
           {/* Normal view */}
           {!loading && !dbError && renderActiveView()}
